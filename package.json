@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "start": "serve .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/XeyKG/monitor-iot-dashboard#readme",
   "devDependencies": {
-    "cypress": "^15.6.0"
+    "cypress": "^15.6.0",
+    "serve": "^14.2.5"
   }
 }
