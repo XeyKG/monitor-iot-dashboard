@@ -937,3 +937,8 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
+
+module.exports = {
+  projectId: "xkrdrz",
+  
+}
