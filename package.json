@@ -1,0 +1,28 @@
+{
+  "name": "sistema-monitoreo-iot",
+  "version": "1.0.0",
+  "description": "\u0000#\u0000 \u0000A\u0000c\u0000t\u0000u\u0000a\u0000l\u0000i\u0000z\u0000a\u0000c\u0000i\u0000�\u0000n\u0000 \u0000p\u0000a\u0000r\u0000a\u0000 \u0000p\u0000r\u0000o\u0000b\u0000a\u0000r\u0000 \u0000a\u0000c\u0000c\u0000i\u0000�\u0000n\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XeyKG/monitor-iot-dashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/XeyKG/monitor-iot-dashboard/issues"
+  },
+  "homepage": "https://github.com/XeyKG/monitor-iot-dashboard#readme",
+  "devDependencies": {
+    "cypress": "^15.6.0"
+  }
+}
