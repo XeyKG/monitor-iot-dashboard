@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Monitoreo IoT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Sistema IoT</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-view="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Vista General</span>
+                </button>
+                <button class="nav-item" data-view="cameras">
+                    <span class="nav-icon">📹</span>
+                    <span>Cámaras LPR</span>
+                </button>
+                <button class="nav-item" data-view="environmental">
+                    <span class="nav-icon">🌡️</span>
+                    <span>Monitor Ambiental</span>
+                </button>
+                <button class="nav-item" data-view="energy">
+                    <span class="nav-icon">⚡</span>
+                    <span>Monitor Energía</span>
+                </button>
+                <button class="nav-item" data-view="devices">
+                    <span class="nav-icon">📱</span>
+                    <span>Dispositivos</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 id="view-title">Vista General</h1>
+                </div>
+                <div class="header-right">
+                    <div class="datetime" id="current-datetime"></div>
+                    <button class="btn btn--primary" id="refresh-btn">
+                        <span>🔄</span>
+                        <span>Actualizar</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Dashboard View -->
+                <div id="dashboard-view" class="view-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card" style="background: var(--color-bg-1);">
+                            <div class="stat-icon">📹</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Cámaras LPR</div>
+                                <div class="stat-value" id="stat-cameras">3</div>
+                            </div>
+                        </div>
+                        <div class="stat-card" style="background: var(--color-bg-2);">
+                            <div class="stat-icon">🌡️</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Monitores Ambientales</div>
+                                <div class="stat-value" id="stat-environmental">3</div>
+                            </div>
+                        </div>
+                        <div class="stat-card" style="background: var(--color-bg-3);">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Monitores Energía</div>
+                                <div class="stat-value" id="stat-energy">4</div>
+                            </div>
+                        </div>
+                        <div class="stat-card" style="background: var(--color-bg-4);">
+                            <div class="stat-icon">🚗</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Eventos Hoy</div>
+                                <div class="stat-value" id="stat-events">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card__header">
+                                <h3>Últimos Eventos LPR</h3>
+                            </div>
+                            <div class="card__body">
+                                <div class="table-container">
+                                    <table class="data-table" id="dashboard-events-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Hora</th>
+                                                <th>Cámara</th>
+                                                <th>Placa</th>
+                                                <th>Evento</th>
+                                                <th>Autorizado</th>
+                                                <th>Velocidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6" class="loading-message">Cargando datos...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__header">
+                                <h3>Actividad por Tipo</h3>
+                            </div>
+                            <div class="card__body">
+                                <canvas id="activity-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cameras View -->
+                <div id="cameras-view" class="view-section">
+                    <div class="tabs">
+                        <button class="tab active" data-camera="LPR1">LPR1</button>
+                        <button class="tab" data-camera="LPR2">LPR2</button>
+                        <button class="tab" data-camera="LPR3">LPR3</button>
+                    </div>
+
+                    <div class="camera-content">
+                        <div class="card-grid">
+                            <div class="card">
+                                <div class="card__header">
+                                    <h3>Datos Actuales</h3>
+                                </div>
+                                <div class="card__body">
+                                    <div id="camera-current-data" class="current-data-grid">
+                                        <div class="loading-message">Cargando...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="charts-row">
+                            <div class="card">
+                                <div class="card__header">
+                                    <h3>Velocidad en el Tiempo</h3>
+                                </div>
+                                <div class="card__body">
+                                    <canvas id="camera-speed-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card__header">
+                                    <h3>Distribución de Eventos</h3>
+                                </div>
+                                <div class="card__body">
+                                    <canvas id="camera-events-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__header">
+                                <h3>Histórico</h3>
+                                <div class="filters">
+                                    <select id="event-type-filter" class="form-control">
+                                        <option value="">Todos los eventos</option>
+                                        <option value="entrada">Entrada</option>
+                                        <option value="salida">Salida</option>
+                                    </select>
+                                    <select id="auth-filter" class="form-control">
+                                        <option value="">Todas las autorizaciones</option>
+                                        <option value="true">Autorizados</option>
+                                        <option value="false">No autorizados</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <div class="table-container">
+                                    <table class="data-table" id="camera-history-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha/Hora</th>
+                                                <th>Placa</th>
+                                                <th>Evento</th>
+                                                <th>Autorizado</th>
+                                                <th>Ocupación</th>
+                                                <th>Velocidad (km/h)</th>
+                                                <th>Ubicación</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="7" class="loading-message">Cargando datos...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Environmental View -->
+                <div id="environmental-view" class="view-section">
+                    <div class="tabs">
+                        <button class="tab active" data-station="EST1">EST1</button>
+                        <button class="tab" data-station="EST2">EST2</button>
+                        <button class="tab" data-station="EST3">EST3</button>
+                    </div>
+
+                    <div class="environmental-content">
+                        <div class="card-grid">
+                            <div class="card">
+                                <div class="card__header">
+                                    <h3>Datos Actuales</h3>
+                                </div>
+                                <div class="card__body">
+                                    <div id="environmental-current-data" class="current-data-grid">
+                                        <div class="loading-message">Cargando...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="charts-row">
+                            <div class="card">
+                                <div class="card__header">
+                                    <h3>Tendencias de Temperatura</h3>
+                                </div>
+                                <div class="card__body">
+                                    <canvas id="environmental-temp-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card__header">
+                                    <h3>Tendencias de Humedad</h3>
+                                </div>
+                                <div class="card__body">
+                                    <canvas id="environmental-humidity-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__header">
+                                <h3>Histórico</h3>
+                            </div>
+                            <div class="card__body">
+                                <div class="table-container">
+                                    <table class="data-table" id="environmental-history-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha/Hora</th>
+                                                <th>Datos</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" class="loading-message">Cargando datos...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Energy View -->
+                <div id="energy-view" class="view-section">
+                    <div class="tabs">
+                        <button class="tab active" data-monitor="EV-001">EV-001</button>
+                        <button class="tab" data-monitor="EV-002">EV-002</button>
+                        <button class="tab" data-monitor="EV-003">EV-003</button>
+                        <button class="tab" data-monitor="EV-004">EV-004</button>
+                    </div>
+
+                    <div class="energy-content">
+                        <div class="card-grid">
+                            <div class="card">
+                                <div class="card__header">
+                                    <h3>Datos Actuales</h3>
+                                </div>
+                                <div class="card__body">
+                                    <div id="energy-current-data" class="current-data-grid">
+                                        <div class="loading-message">Cargando...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__header">
+                                <h3>Consumo en el Tiempo</h3>
+                            </div>
+                            <div class="card__body">
+                                <canvas id="energy-consumption-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__header">
+                                <h3>Histórico</h3>
+                            </div>
+                            <div class="card__body">
+                                <div class="table-container">
+                                    <table class="data-table" id="energy-history-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha/Hora</th>
+                                                <th>Datos</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" class="loading-message">Cargando datos...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Devices View -->
+                <div id="devices-view" class="view-section">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Lista de Dispositivos</h3>
+                            <input type="text" id="device-search" class="form-control" placeholder="Buscar dispositivo..." style="max-width: 300px;">
+                        </div>
+                        <div class="card__body">
+                            <div class="table-container">
+                                <table class="data-table" id="devices-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tipo</th>
+                                            <th>Estado</th>
+                                            <th>Información</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="loading-message">Cargando dispositivos...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
