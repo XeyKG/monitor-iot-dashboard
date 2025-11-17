@@ -1,11 +1,13 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  projectId: "a7bq2k",
-
   e2e: {
+    baseUrl: "http://127.0.0.1:8080",
+    viewportWidth: 1280,
+    viewportHeight: 720,
+    specPattern: "cypress/e2e/app.cy.js",
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      // node event listeners can be registered here if needed
     },
   },
 });
